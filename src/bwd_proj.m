@@ -7,7 +7,7 @@ c_2 = p/(b_0*gamma^2) - q^2;
 c_1 = sgn*2*(p/(gamma*sqrt(b_0)*sqrt(b))  + q);
 c_0 = p/b - 1;
 
-desc = sqrt(c_1^2 - 4*c_2*c_0);    
+desc = sqrt(c_1^2 - 4*c_2*c_0);
 l_(1) = (-c_1+real(desc))/(2*c_2);
 l_(2) = (-c_1-real(desc))/(2*c_2);
 

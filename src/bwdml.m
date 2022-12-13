@@ -1,6 +1,5 @@
 function [M,X,b] = bwdml(M_0, X_0, u, S, C, gamma, maxItrs, tol)
 
-N_train = size(X,3);
 m = size(C,1);
 l = zeros(m,1);
 l_ = zeros(m,1);
@@ -10,7 +9,7 @@ valid = ones(m,1);
 for i=1:m
    i1 = C(i,1);
    i2 = C(i,2);
-   u_ij = u(i1,:)' - u(i2,:)'; 
+   u_ij = u(:,i1) - u(:,i2); 
    S_ij = S(:,:,i1) - S(:,:,i2);
    if norm(u_ij) + norm(S_ij)  < 10e-10
       valid(i) = 0;
@@ -37,12 +36,12 @@ try
             [U,~,V] = svd(S(:,:,i2)*X^2*S(:,:,i1)); 
             U = U*V';
             V_ij = S(:,:,i1) - S(:,:,i2)*U; 
-            u_ij = u(i1,:)' - u(i2,:)'; 
+            u_ij = u(:,i1) - u(:,i2); 
             sgn = C(k,3);
             b_0 = C(k,4);
             
-            if sgn*trace(V*V'*X*X) >= sgn*b(k)
-                [X,b(k),a] = bwd_proj(M,X,b(k),u_ij,V_ij,b_0,gamma,sgn,l(k));
+            if sgn*(u_ij'*M*M*u_ij + trace(V_ij*V_ij'*X*X)) >= sgn*b(k)
+                [M,X,b(k),a] = bwd_proj(M,X,b(k),u_ij,V_ij,b_0,gamma,sgn,l(k));
                 l(k) = l(k) - a;
             end
         end

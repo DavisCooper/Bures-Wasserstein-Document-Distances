@@ -1,4 +1,4 @@
-function [l, u] = ComputeBWDExtremes(u, S, a, b)
+function [l, u] = ComputeBWDExtremes(u, S, a, b, M_0, X_0)
 % [l, u] = ComputeDistanceExtremes(X, a, b, M)
 %
 % Computes sample histogram of the distances between rows of X and returns
@@ -30,9 +30,14 @@ dists = zeros(num_trials, 1);
 for i=1:num_trials
     j1 = ceil(rand(1)*n);
     j2 = ceil(rand(1)*n);    
-    [U,~,V] = svd(S(:,:,j2)*S(:,:,j1)); % SVD calculation is faster than matrix square root
+
+    [U,~,V] = svd(S(:,:,j2)*X_0*S(:,:,j1)); % SVD calculation is faster than matrix square root
     W = U*V';
-    dists(i) = norm(u(:,j1) - u(:,j2))^2 + norm(S(:,:,j1) - S(:,:,j2)*W)^2;
+    
+    u_ij = u(:,j1) - u(:,j2);
+    S_ij = S(:,:,j1) - S(:,:,j2)*W; 
+    
+    dists(i) = u_ij'*M_0*u_ij + trace(S_ij*S_ij'*X_0);
 end
 
 [~, c] = hist(dists, 100);

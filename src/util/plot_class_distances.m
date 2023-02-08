@@ -21,6 +21,7 @@ for i=1:n_c
             end
         end
         subplot(n_c,n_c, j + (i-1)*n_c)
+        hold on
         histogram(h)
     end
 end

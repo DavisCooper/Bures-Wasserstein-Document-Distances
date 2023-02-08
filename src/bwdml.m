@@ -25,15 +25,11 @@ try
     sqrt_M_0 = sqrtm(M_0);
     M = sqrt_M_0;
     
-%     for i=1:N_train
-%         X(:,:,i) = sqrt_X_0\X(:,:,i);
-%     end
-    
     for i=1:maxItrs
         for k=1:m 
             i1 = C(k,1);
             i2 = C(k,2);
-            [U,~,V] = svd(S(:,:,i2)*X^2*S(:,:,i1)); 
+            [U,~,V] = svd(S(:,:,i2)*X^2*S(:,:,i1));
             U = U*V';
             V_ij = S(:,:,i1) - S(:,:,i2)*U; 
             u_ij = u(:,i1) - u(:,i2); 

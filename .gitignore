@@ -1,3 +1,6 @@
 *.DS_Store
 *.idea/
 *.asv
+bbcsport_cov_tr_te_split.mat
+bbcsport/
+bbcsport_full/
